@@ -12,65 +12,53 @@
 
 using namespace std;
 
-void doPlots(std::string expression, int nbin, float bin_low, float bin_hi, std::string outputName, std::string title="");
+void doPlots(string expression, int nbin, float bin_low, float bin_hi, string outputName, string title="");
 
-void doPlots(std::string expression, int nbin, float bin_low, float bin_hi, std::string outputName, std::string title){
+void doPlots(string expression, int nbin, float bin_low, float bin_hi, string outputName, string title){
     vector<string> rootfiles{"mR030_pcut100_evnt10000.root","mR040_pcut100_evnt10000.root","mR050_pcut100_evnt10000.root","mR060_pcut100_evnt10000.root","mR080_pcut100_evnt10000.root","mR100_pcut100_evnt10000.root","mR130_pcut100_evnt10000.root","mR160_pcut100_evnt10000.root","mR190_pcut100_evnt10000.root","mR220_pcut100_evnt10000.root"};//9
     vector<int> mR{30,40,50,60,80,100,130,160,190,220};
+    vector<int> colors{1,2,3,4,5,6,7,8,9,11};
 
-   //Declaring Variable.size()*rootfile.size()# of histograms 
-    vector<TH1F*> histograms;
+    //OUTPUT files
+    //TFile *output_file = new TFile(outputName.c_str(),"Recreate");
 
-   //OUTPUT files
-    TFile *output_file = new TFile(outputName.c_str(),"Recreate");
+    TLegend *tl = new TLegend(0.7,0.55,0.87,0.87);
+    tl->SetFillColor(0);
+    tl->SetBorderSize(0);
 
-   //Declaring and opening the INPUT rootfiles as TFile objects
-    vector<TFile*> File;
-    vector<TTree*> Tree;
-    int histcount=-1;
-      
-      TLegend *tl = new TLegend(0.7,0.55,0.87,0.87);
-      tl->SetFillColor(0);
-      tl->SetBorderSize(0);
-
-      bool first = true;
+    bool first = true;
     for (int j=0; j<rootfiles.size(); j++){
-           cout<<"Rootfiles.at(j)"<<rootfiles.at(j)<<endl;
-            File.push_back(TFile::Open((rootfiles.at(j)).c_str()));
-            Tree.push_back((TTree*) (File.at(j)->Get("truth")) );
+        TFile* file = TFile::Open(rootfiles.at(j).c_str());
+        TTree* tree = (TTree*)file->Get("truth");
 
-            string HistName=expression+"_mR"+to_string(mR.at(j));//e.g: fjet_pt_mR30
+        string histName=expression+"_mR"+to_string(mR.at(j));//e.g: fjet_pt_mR30
 
-            string Drawing=expression+">>"+HistName + "(" + to_string(nbin) + "," + to_string(bin_low) + "," + to_string(bin_hi) + ")";
-            cout << "Drawing expression: '" << Drawing << "'" << endl;
-            Tree.at(j)->Draw(Drawing.c_str(),"","goff");
+        string Drawing=expression+">>"+histName + "(" + to_string(nbin) + "," + to_string(bin_low) + "," + to_string(bin_hi) + ")";
+        cout << "Drawing expression: '" << Drawing << "'" << endl;
+        tree->Draw(Drawing.c_str(),"","goff");
 
-            cout << "grab hist name: " << HistName << endl;
-            TH1F* h = (TH1F*) gROOT->FindObject(HistName.c_str());
-            if (h == nullptr) {
-                cout << "Error! Couldn't find histogram." << endl;
-                continue;
-            }
+        cout << "grab hist name: " << histName << endl;
+        TH1F* h = (TH1F*) gROOT->FindObject(histName.c_str());
+        if (h == nullptr || h->Integral() == 0) {
+            cout << "Error! Couldn't find histogram." << endl;
+            continue;
+        }
 
-            histograms.push_back(h);
-            if (j!=9){
-                h->SetLineColor(j+1);
-            }
-            else {
-                h->SetLineColor(j+2);
-            }
-            if (first){
-                first = false;
-                h->Draw();
-                h->SetTitle(title.c_str());
-                ((TAxis*)h->GetYaxis())->SetTitleOffset(1.25);
-            }
-            else {
-                h->Draw("Same");
-            }
-            tl->AddEntry(h,("mR"+to_string(mR.at(j))).c_str(),"LP");
-           
-    
+        h->Scale(1./h->Integral());
+
+        h->SetLineColor(colors.at(j));
+
+        if (first){
+            h->Draw();
+            h->SetTitle(title.c_str());
+            ((TAxis*)h->GetYaxis())->SetTitleOffset(1.25);
+            first = false;
+        }
+        else {
+            h->Draw("Same");
+        }
+
+        tl->AddEntry(h,("mR"+to_string(mR.at(j))).c_str(),"LP");
     }
     
     TCanvas* canvas = (TCanvas*)gROOT->FindObject("c1");
@@ -113,7 +101,7 @@ output_file->Close();
 void plotVariables(void) {
     gStyle->SetOptStat(0);
 
-    int nBinPt=90;
+    int nBinPt=60;
     int xMaxPt=900e3;
 
     doPlots("fjet_m[0]/1e3", 50, 0, 250, "fjet_m", ";large-R jet mass [GeV];y-axis label");
