@@ -102,10 +102,11 @@ void plotVariables(void) {
     gStyle->SetOptStat(0);
 
     int nBinPt=60;
-    int xMaxPt=900e3;
+    float xMinPt=200;
+    float xMaxPt=900;
 
-    doPlots("fjet_m[0]/1e3", 50, 0, 250, "fjet_m", ";large-R jet mass [GeV];y-axis label");
-    doPlots("fjet_pt[0]", nBinPt, 0, xMaxPt, "fjet_pt");
+    doPlots("fjet_m[0]/1e3", 80, 0, 250, "fjet_m", ";large-R jet mass [GeV];");
+    doPlots("fjet_pt[0]/1e3", nBinPt, xMinPt, xMaxPt, "fjet_pt");
  //   doPlots("jet_pt", 50, 0, 250e3,"test.root");
  //   doPlots("jet_m", 50, 0, 250e3, "test.root");
     doPlots("fjetTau_m[0]", 50, 0, 250e3, "fjetTau_m");
