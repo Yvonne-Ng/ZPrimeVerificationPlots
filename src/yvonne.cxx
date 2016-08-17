@@ -15,8 +15,8 @@ using namespace std;
 void doPlots(std::string expression, int nbin, float bin_low, float bin_hi, std::string outputName, std::string title="");
 
 void doPlots(std::string expression, int nbin, float bin_low, float bin_hi, std::string outputName, std::string title){
-    vector<string> rootfiles{"mR030_pcut100_evnt10000.root","mR040_pcut100_evnt10000.root","mR050_pcut100_evnt10000.root","mR060_pcut100_evnt10000.root","mR080_pcut100_evnt10000.root","mR130_pcut100_evnt10000.root","mR160_pcut100_evnt10000.root","mR190_pcut100_evnt10000.root","mR220_pcut100_evnt10000.root"};//9
-    vector<int> mR{30,40,50,60,80,130,160,190,220};
+    vector<string> rootfiles{"mR030_pcut100_evnt10000.root","mR040_pcut100_evnt10000.root","mR050_pcut100_evnt10000.root","mR060_pcut100_evnt10000.root","mR080_pcut100_evnt10000.root","mR100_pcut100_evnt10000.root","mR130_pcut100_evnt10000.root","mR160_pcut100_evnt10000.root","mR190_pcut100_evnt10000.root","mR220_pcut100_evnt10000.root"};//9
+    vector<int> mR{30,40,50,60,80,100,130,160,190,220};
 
    //Declaring Variable.size()*rootfile.size()# of histograms 
     vector<TH1F*> histograms;
