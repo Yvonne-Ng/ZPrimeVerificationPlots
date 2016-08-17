@@ -53,7 +53,12 @@ void doPlots(std::string expression, int nbin, float bin_low, float bin_hi, std:
             }
 
             histograms.push_back(h);
-            h->SetLineColor(j+1);
+            if (j!=9){
+                h->SetLineColor(j+1);
+            }
+            else {
+                h->SetLineColor(j+2);
+            }
             if (first){
                 first = false;
                 h->Draw();
