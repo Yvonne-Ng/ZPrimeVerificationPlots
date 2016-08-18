@@ -26,6 +26,7 @@ void doPlots(string expression, int nbin, float bin_low, float bin_hi, string ou
     TLegend *tl = new TLegend(0.7,0.55,0.87,0.87);
     tl->SetFillColor(0);
     tl->SetBorderSize(0);
+    tl->SetTextSize(0.03);
 
     TCanvas* canvas = new TCanvas((outputName+"_canvas").c_str(), "", 800, 600);
     canvas->cd();
@@ -114,19 +115,23 @@ void plotVariables(void) {
 
     int nBinPt=30;
     float xMinPt=250;
-    float xMaxPt=900;
+    float xMaxPt=1800;
 
     doPlots("fjet_m[0]/1e3", nBinMass, xMinMass, xMaxMass, "fjet_m", ";large-R jet mass [GeV];");
-    doPlots("fjet_pt[0]/1e3", nBinPt, xMinPt, xMaxPt, "fjet_pt", ";large-R jet p_{T} [GeV]", true);
+    doPlots("fjet_pt[0]/1e3", nBinPt, xMinPt, xMaxPt, "fjet_pt", ";large-R jet p_{T} [GeV]", false);
+    doPlots("fjet_pt[0]/1e3", nBinPt, xMinPt, xMaxPt, "fjet_pt_log", ";large-R jet p_{T} [GeV]", true);
  //   doPlots("jet_pt", 50, 0, 250e3,"test.root");
  //   doPlots("jet_m", 50, 0, 250e3, "test.root");
     doPlots("fjetTau_m[0]/1e3", nBinMass, xMinMass, xMaxMass, "fjetTau_m", ";large-R jet mass [GeV]");
-    doPlots("fjetTau_pt[0]/1e3", 50, 0, 1.2e3, "fjetTau_pt","",false);
-    doPlots("fjetTau_pt[0]/1e3", 50, 0, 1.2e3, "fjetTau_pt_log","",true);
-    doPlots("jetNOleading_pt[0]", nBinPt, 0, xMaxPt,"jetNOleading_pt");
-    doPlots("jetNOleading_m[0]", 50, 0, 250e3, "jetNOleading_m");
-    doPlots("jetNOleading_pt[0]",nBinPt,0,xMaxPt, "jetNOleading_pt");
-    doPlots("jetNOtau_pt[0]",nBinPt,0,xMaxPt,"jetNOtau_pt");
-    doPlots("jetNOtau_m[0]",50,0,250e3,"jetNOtau_m");
+    doPlots("fjetTau_pt[0]/1e3", 50, 0, 1.8e3, "fjetTau_pt",";large-R jet p_{T} [GeV]",false);
+    doPlots("fjetTau_pt[0]/1e3", 50, 0, 1.8e3, "fjetTau_pt_log",";large-R jet p_{T} [GeV]",true);
+    doPlots("jetNOleading_pt[0]/1e3", nBinPt, 0, xMaxPt,"jetNOleading_pt",";probe jet p_{T} [GeV]",false);
+    doPlots("jetNOleading_pt[0]/1e3", nBinPt, 0, xMaxPt,"jetNOleading_pt_log",";probe jet p_{T} [GeV]",true);
+    doPlots("jetNOleading_m[0]/1e3", 50, 0, 250, "jetNOleading_m",";probe jet mass [GeV]",false);
+    doPlots("jetNOleading_pt[0]/1e3",nBinPt,0,xMaxPt, "jetNOleading_pt", ";probe jet p_{T}[GeV]",false);
+    doPlots("jetNOleading_pt[0]/1e3",nBinPt,0,xMaxPt, "jetNOleading_pt_log", ";probe jet p_{T}[GeV]",true);
+    doPlots("jetNOtau_pt[0]/1e3",nBinPt,0,xMaxPt,"jetNOtau_pt","probe jet p_{T}[GeV]",false);
+    doPlots("jetNOtau_pt[0]/1e3",nBinPt,0,xMaxPt,"jetNOtau_pt_log","probe jet p_{T}[GeV]",true);
+    doPlots("jetNOtau_m[0]/1e3",50,0,250,"jetNOtau_m","probe jet mass [GeV]",false);
 }
 
